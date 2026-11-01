@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>冰箱里面有什么</title>
   <style>
     :root { --ink:#18352f; --muted:#6b7f78; --line:#e8eee9; --cream:#faf9f5; --mint:#dff4e7; --green:#1d9b6c; --orange:#ff8a5b; }
@@ -14,13 +14,32 @@
     .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,430px);height:76px;background:#fffffff2;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 16px}.nav button{background:transparent;color:#91a29b;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px}.nav .active{color:var(--green);font-weight:700}.nav b{font-size:20px;line-height:20px}
     .screen{display:none}.screen.active{display:block}.page-title{display:flex;align-items:center;gap:10px;margin:8px 0 20px}.page-title h2{margin:0;font-size:23px}.back{background:#edf3ef;color:var(--ink);height:34px;width:34px;border-radius:11px;font-size:18px}.upload{border:2px dashed #a8d9c1;border-radius:23px;background:#effaf3;min-height:265px;display:grid;place-items:center;text-align:center;padding:25px}.upload .camera{font-size:52px}.upload h3{margin:12px 0 5px}.upload p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}.upload input{display:none}.secondary{margin-top:14px;width:100%;padding:13px;border-radius:14px;background:#fff;color:var(--green);font-weight:700;border:1px solid #bde5ce}.recognition{margin-top:16px}.recognition h3{margin:0 0 10px;font-size:16px}.check{display:flex;align-items:center;gap:10px;background:#fff;padding:12px;border-radius:14px;margin-top:8px}.check input{accent-color:var(--green);width:18px;height:18px}.check span{font-size:23px}.check label{flex:1;font-weight:650}.check small{color:var(--muted)}.save{margin-top:18px;width:100%;padding:15px;border-radius:15px;background:var(--green);color:#fff;font-weight:750}
     .meal{background:linear-gradient(135deg,#fff0e9,#fff9ef);border-radius:22px;padding:18px}.meal h3{margin:0 0 6px}.meal p{font-size:13px;color:#8c6658;line-height:1.5;margin:0 0 14px}.meal .choices{display:flex;gap:8px;flex-wrap:wrap}.choice{padding:9px 11px;background:#fff;border-radius:12px;color:#8c6658;font-size:13px}.plan{display:flex;align-items:center;gap:13px}.plan .dish{font-size:36px}.plan h4{margin:0;font-size:16px}.plan p{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .home-cta{width:100%;margin-bottom:6px}
+    /* Desktop: sidebar + multi-column content; below 900px the phone layout above applies */
+    @media (min-width:900px){
+      .app{width:min(100%,1280px);padding:0;overflow:visible;display:grid;grid-template-columns:220px minmax(0,1fr);background:var(--cream)}
+      .nav{position:sticky;top:0;left:auto;bottom:auto;transform:none;width:auto;height:100vh;grid-column:1;grid-row:1;flex-direction:column;justify-content:flex-start;gap:6px;padding:32px 16px;background:#fff;border-top:0;border-right:1px solid var(--line)}
+      .nav button{flex-direction:row;justify-content:flex-start;gap:12px;width:100%;padding:12px 14px;border-radius:12px;font-size:15px}
+      .nav button:hover{background:#f2f6f3}.nav .active{background:var(--mint)}
+      .screen{grid-column:2;grid-row:1;padding:32px 40px 48px}
+      .back{display:none}
+      .home-cta{width:auto}
+      .zone-list{grid-template-columns:repeat(3,1fr);align-items:start}
+      #fridge.active{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;align-content:start}
+      #fridge .page-title,#fridge .drag-note{grid-column:1/-1;margin-bottom:0}
+      #fridge .section{margin-top:6px}
+      #scan{max-width:720px}
+      #dinner.active{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;align-content:start}
+      #dinner .page-title,#dinner .meal{grid-column:1/-1}
+      .drag-ghost{width:320px}
+    }
   </style>
 </head>
 <body>
   <main class="app">
     <section id="home" class="screen active">
       <header class="top"><div><p class="eyebrow">9月7日，星期一</p><h1>冰箱里面有什么</h1></div><div class="avatar">👋</div></header>
-      <button class="btn" onclick="show('scan')" style="width:100%;margin-bottom:6px">＋ 拍照入库</button>
+      <button class="btn home-cta" onclick="show('scan')">＋ 拍照入库</button>
       <div class="section"><h3>我的食材</h3><button class="link" onclick="show('fridge')">管理</button></div>
       <div class="zone-list">
         <details class="zone" open data-home-zone="冷藏"><summary><span class="zone-icon">🧊</span><span>冷藏 <small class="zone-count"></small></span></summary><div class="zone-items"></div></details>
@@ -32,7 +51,7 @@
     </section>
     <section id="scan" class="screen"><div class="page-title"><button class="back" onclick="show('home')">‹</button><h2>拍照入库</h2></div><label class="upload"><div><div class="camera">📸</div><h3>拍下你的购物成果</h3><p>可拍购物袋、收据，或将食材摊开拍摄<br>我们会识别并整理它们</p></div><input type="file" accept="image/*" onchange="recognize()"></label><button class="secondary" onclick="recognize()">从相册选择照片</button><div id="recognition" class="recognition" style="display:none"><h3>识别到 4 样食材 <span style="color:#6b7f78;font-weight:400;font-size:12px">可修改</span></h3><div class="check"><input type="checkbox" checked><span>🍅</span><label>番茄</label><small>4 个</small></div><div class="check"><input type="checkbox" checked><span>🍗</span><label>鸡胸肉</label><small>2 份</small></div><div class="check"><input type="checkbox" checked><span>🥛</span><label>牛奶</label><small>1 盒</small></div><div class="check"><input type="checkbox" checked><span>🥬</span><label>菠菜</label><small>1 把</small></div><button class="save" onclick="saveItems()">确认入库 · 购于今天</button></div></section>
     <section id="fridge" class="screen"><div class="page-title"><button class="back" onclick="show('home')">‹</button><h2>我的食材</h2></div><p class="drag-note">按住食材，拖到另一个区域即可整理。</p><div class="inventory-zone" data-dropzone="冷藏"><div class="section"><h3>冷藏</h3><button class="link">＋ 添加</button></div><div class="food-list"></div></div><div class="inventory-zone" data-dropzone="冷冻"><div class="section"><h3>冷冻</h3><button class="link">＋ 添加</button></div><div class="food-list"></div></div><div class="inventory-zone" data-dropzone="冰箱外"><div class="section"><h3>冰箱外</h3><button class="link">＋ 添加</button></div><div class="food-list"></div></div></section>
-    <section id="dinner" class="screen"><div class="page-title"><button class="back" onclick="show('home')">‹</button><h2>今晚吃什么</h2></div><article class="meal"><h3>用冰箱里的食材</h3><p>选择你想用掉的食材，安排一顿刚刚好的晚餐。</p><div class="choices"><span class="choice">🥬 菠菜</span><span class="choice">◻️ 豆腐</span><span class="choice">🍅 番茄</span><span class="choice">🍗 鸡胸肉</span></div></article><div class="section"><h3>新建晚餐</h3></div><div class="meal-form"><input id="dish-name" class="meal-input" placeholder="菜名，例如：洋葱炒鸡蛋"><input id="dish-ingredients" class="meal-input" placeholder="食材，用逗号分隔，例如：洋葱，鸡蛋"><p class="add-note">清单里没有的食材会自动加入“冷藏”，数量可随后编辑。</p><button class="save" onclick="addPlan()">加入今晚计划</button></div><div class="section"><h3>今晚的计划</h3></div><div id="plans" class="food-list"><div class="food plan"><div class="dish">🍲</div><div><h4>番茄豆腐汤</h4><p>番茄、豆腐 · 约 15 分钟</p></div></div><div class="food plan"><div class="dish">🥗</div><div><h4>香煎鸡胸肉沙拉</h4><p>鸡胸肉、菠菜 · 约 20 分钟</p></div></div></div></section>
+    <section id="dinner" class="screen"><div class="page-title"><button class="back" onclick="show('home')">‹</button><h2>今晚吃什么</h2></div><article class="meal"><h3>用冰箱里的食材</h3><p>选择你想用掉的食材，安排一顿刚刚好的晚餐。</p><div class="choices"><span class="choice">🥬 菠菜</span><span class="choice">◻️ 豆腐</span><span class="choice">🍅 番茄</span><span class="choice">🍗 鸡胸肉</span></div></article><div><div class="section"><h3>新建晚餐</h3></div><div class="meal-form"><input id="dish-name" class="meal-input" placeholder="菜名，例如：洋葱炒鸡蛋"><input id="dish-ingredients" class="meal-input" placeholder="食材，用逗号分隔，例如：洋葱，鸡蛋"><p class="add-note">清单里没有的食材会自动加入“冷藏”，数量可随后编辑。</p><button class="save" onclick="addPlan()">加入今晚计划</button></div></div><div><div class="section"><h3>今晚的计划</h3></div><div id="plans" class="food-list"><div class="food plan"><div class="dish">🍲</div><div><h4>番茄豆腐汤</h4><p>番茄、豆腐 · 约 15 分钟</p></div></div><div class="food plan"><div class="dish">🥗</div><div><h4>香煎鸡胸肉沙拉</h4><p>鸡胸肉、菠菜 · 约 20 分钟</p></div></div></div></div></section>
     <nav class="nav"><button class="active" data-page="home" onclick="show('home')"><b>⌂</b>首页</button><button data-page="fridge" onclick="show('fridge')"><b>▦</b>我的冰箱</button><button data-page="scan" onclick="show('scan')"><b>＋</b>入库</button><button data-page="dinner" onclick="show('dinner')"><b>♨</b>晚餐</button></nav>
   </main>
   <script>
