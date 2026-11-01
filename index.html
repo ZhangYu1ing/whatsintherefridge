@@ -1,80 +1,299 @@
-<!doctype html>
-<html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>冰箱里面有什么</title>
+  <title>WhatsInTheFridge - Yuling & Ruobing's Kitchen</title>
+  <!-- Tailwind CSS CDN for Modern Styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Vector Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    :root { --ink:#18352f; --muted:#6b7f78; --line:#e8eee9; --cream:#faf9f5; --mint:#dff4e7; --green:#1d9b6c; --orange:#ff8a5b; }
-    *{box-sizing:border-box} body{margin:0;background:#e8eee9;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink)}
-    button,input{font:inherit} button{border:0;cursor:pointer} .app{width:min(100%,430px);min-height:100vh;margin:auto;background:var(--cream);padding:20px 18px 96px;position:relative;overflow:hidden}
-    .top{display:flex;justify-content:space-between;align-items:center;margin:6px 0 22px}.eyebrow{font-size:13px;color:var(--muted);margin:0 0 4px}.top h1{font-size:25px;margin:0;letter-spacing:-1px}.avatar{height:40px;width:40px;border-radius:50%;background:#ffd9a9;display:grid;place-items:center;font-size:20px}
-    .card{background:white;border-radius:22px;padding:18px;box-shadow:0 8px 22px #2e51420b}.btn{background:var(--green);color:#fff;border-radius:14px;padding:12px 17px;font-weight:700;box-shadow:0 5px 10px #15986633}.section{display:flex;align-items:center;justify-content:space-between;margin:26px 2px 13px}.section h3{margin:0;font-size:18px}.link{color:var(--green);background:transparent;font-weight:650;font-size:14px}.zone-list{display:grid;gap:11px}.zone{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}.zone summary{list-style:none;cursor:pointer;padding:16px;display:flex;align-items:center;gap:12px;font-weight:750}.zone summary::-webkit-details-marker{display:none}.zone summary:after{content:'⌄';margin-left:auto;color:var(--muted);font-size:18px}.zone[open] summary:after{transform:rotate(180deg)}.zone-icon{width:37px;height:37px;border-radius:12px;background:#eff7f1;display:grid;place-items:center;font-size:21px}.zone-count{color:var(--muted);font-size:13px;font-weight:500}.zone-items{padding:0 16px 14px 65px;color:var(--muted);font-size:14px;line-height:1.9;border-top:1px solid var(--line)}
-    .food-list{display:grid;gap:10px}.food{display:flex;gap:12px;align-items:center;background:#fff;padding:11px;border-radius:16px}.food .emoji{font-size:27px;width:42px;height:42px;display:grid;place-items:center;background:#f4f7f3;border-radius:12px}.food .name{font-weight:700;font-size:15px}.food .meta{font-size:12px;color:var(--muted);margin-top:3px}.tag{margin-left:auto;font-size:11px;padding:5px 8px;border-radius:9px;background:#e8f7ef;color:#258257;font-weight:650}.tag.warn{background:#fff0e8;color:#d76a42}.inventory-zone{padding:12px;border:1px solid transparent;border-radius:20px;transition:.18s}.inventory-zone.drop-target{border-color:#74c9a0;background:#effaf3}.drag-note{margin:-4px 2px 15px;color:var(--muted);font-size:13px}.draggable{cursor:grab;touch-action:none;user-select:none}.draggable:active{cursor:grabbing}.draggable.dragging{opacity:.25}.drag-ghost{position:fixed;z-index:20;width:calc(min(100vw,430px) - 60px);pointer-events:none;box-shadow:0 14px 30px #16382b33;transform:rotate(2deg);opacity:.96}.food-actions{display:flex;gap:6px;margin-left:auto}.food-action{padding:6px 8px;border-radius:9px;background:#f2f6f3;color:#4d675c;font-size:11px;font-weight:650}.food-action.remove{background:#fff1ec;color:#c96747}.meal-form{display:grid;gap:9px;margin-top:14px}.meal-input{width:100%;border:1px solid #eadfd7;background:#fff;border-radius:12px;padding:11px;font-size:14px}.meal-form .save{margin-top:0}.add-note{font-size:12px;color:#8c6658;margin:0}
-    .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,430px);height:76px;background:#fffffff2;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:10px 16px}.nav button{background:transparent;color:#91a29b;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px}.nav .active{color:var(--green);font-weight:700}.nav b{font-size:20px;line-height:20px}
-    .screen{display:none}.screen.active{display:block}.page-title{display:flex;align-items:center;gap:10px;margin:8px 0 20px}.page-title h2{margin:0;font-size:23px}.back{background:#edf3ef;color:var(--ink);height:34px;width:34px;border-radius:11px;font-size:18px}.upload{border:2px dashed #a8d9c1;border-radius:23px;background:#effaf3;min-height:265px;display:grid;place-items:center;text-align:center;padding:25px}.upload .camera{font-size:52px}.upload h3{margin:12px 0 5px}.upload p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}.upload input{display:none}.secondary{margin-top:14px;width:100%;padding:13px;border-radius:14px;background:#fff;color:var(--green);font-weight:700;border:1px solid #bde5ce}.recognition{margin-top:16px}.recognition h3{margin:0 0 10px;font-size:16px}.check{display:flex;align-items:center;gap:10px;background:#fff;padding:12px;border-radius:14px;margin-top:8px}.check input{accent-color:var(--green);width:18px;height:18px}.check span{font-size:23px}.check label{flex:1;font-weight:650}.check small{color:var(--muted)}.save{margin-top:18px;width:100%;padding:15px;border-radius:15px;background:var(--green);color:#fff;font-weight:750}
-    .meal{background:linear-gradient(135deg,#fff0e9,#fff9ef);border-radius:22px;padding:18px}.meal h3{margin:0 0 6px}.meal p{font-size:13px;color:#8c6658;line-height:1.5;margin:0 0 14px}.meal .choices{display:flex;gap:8px;flex-wrap:wrap}.choice{padding:9px 11px;background:#fff;border-radius:12px;color:#8c6658;font-size:13px}.plan{display:flex;align-items:center;gap:13px}.plan .dish{font-size:36px}.plan h4{margin:0;font-size:16px}.plan p{margin:4px 0 0;color:var(--muted);font-size:13px}
-    .home-cta{width:100%;margin-bottom:6px}
-    /* Desktop: sidebar + multi-column content; below 900px the phone layout above applies */
-    @media (min-width:900px){
-      .app{width:min(100%,1280px);padding:0;overflow:visible;display:grid;grid-template-columns:220px minmax(0,1fr);background:var(--cream)}
-      .nav{position:sticky;top:0;left:auto;bottom:auto;transform:none;width:auto;height:100vh;grid-column:1;grid-row:1;flex-direction:column;justify-content:flex-start;gap:6px;padding:32px 16px;background:#fff;border-top:0;border-right:1px solid var(--line)}
-      .nav button{flex-direction:row;justify-content:flex-start;gap:12px;width:100%;padding:12px 14px;border-radius:12px;font-size:15px}
-      .nav button:hover{background:#f2f6f3}.nav .active{background:var(--mint)}
-      .screen{grid-column:2;grid-row:1;padding:32px 40px 48px}
-      .back{display:none}
-      .home-cta{width:auto}
-      .zone-list{grid-template-columns:repeat(3,1fr);align-items:start}
-      #fridge.active{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;align-content:start}
-      #fridge .page-title,#fridge .drag-note{grid-column:1/-1;margin-bottom:0}
-      #fridge .section{margin-top:6px}
-      #scan{max-width:720px}
-      #dinner.active{display:grid;grid-template-columns:1fr 1fr;gap:0 32px;align-content:start}
-      #dinner .page-title,#dinner .meal{grid-column:1/-1}
-      .drag-ghost{width:320px}
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
   </style>
 </head>
-<body>
-  <main class="app">
-    <section id="home" class="screen active">
-      <header class="top"><div><p class="eyebrow">9月7日，星期一</p><h1>冰箱里面有什么</h1></div><div class="avatar">👋</div></header>
-      <button class="btn home-cta" onclick="show('scan')">＋ 拍照入库</button>
-      <div class="section"><h3>我的食材</h3><button class="link" onclick="show('fridge')">管理</button></div>
-      <div class="zone-list">
-        <details class="zone" open data-home-zone="冷藏"><summary><span class="zone-icon">🧊</span><span>冷藏 <small class="zone-count"></small></span></summary><div class="zone-items"></div></details>
-        <details class="zone" data-home-zone="冷冻"><summary><span class="zone-icon">❄️</span><span>冷冻 <small class="zone-count"></small></span></summary><div class="zone-items"></div></details>
-        <details class="zone" data-home-zone="冰箱外"><summary><span class="zone-icon">🧺</span><span>冰箱外 <small class="zone-count"></small></span></summary><div class="zone-items"></div></details>
+<body class="bg-zinc-900 text-zinc-100 antialiased min-h-screen relative overflow-x-hidden">
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-4 bg-black/30 backdrop-blur-md border-b border-white/10">
+    <div class="flex items-center space-x-4">
+      <!-- Menu Button -->
+      <button id="open-menu" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white flex items-center justify-center">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+      <!-- Logo / Brand Title -->
+      <div class="flex items-center space-x-2">
+        <i data-lucide="refrigerator" class="w-6 h-6 text-emerald-400"></i>
+        <span class="text-lg font-bold tracking-tight text-white">WhatsInTheFridge</span>
       </div>
-      <div class="section"><h3>今晚吃什么</h3><button class="link" onclick="show('dinner')">查看计划</button></div>
-      <div class="food plan"><div class="dish">🍲</div><div><h4>番茄豆腐汤</h4><p>番茄、豆腐 · 约 15 分钟</p></div></div>
-    </section>
-    <section id="scan" class="screen"><div class="page-title"><button class="back" onclick="show('home')">‹</button><h2>拍照入库</h2></div><label class="upload"><div><div class="camera">📸</div><h3>拍下你的购物成果</h3><p>可拍购物袋、收据，或将食材摊开拍摄<br>我们会识别并整理它们</p></div><input type="file" accept="image/*" onchange="recognize()"></label><button class="secondary" onclick="recognize()">从相册选择照片</button><div id="recognition" class="recognition" style="display:none"><h3>识别到 4 样食材 <span style="color:#6b7f78;font-weight:400;font-size:12px">可修改</span></h3><div class="check"><input type="checkbox" checked><span>🍅</span><label>番茄</label><small>4 个</small></div><div class="check"><input type="checkbox" checked><span>🍗</span><label>鸡胸肉</label><small>2 份</small></div><div class="check"><input type="checkbox" checked><span>🥛</span><label>牛奶</label><small>1 盒</small></div><div class="check"><input type="checkbox" checked><span>🥬</span><label>菠菜</label><small>1 把</small></div><button class="save" onclick="saveItems()">确认入库 · 购于今天</button></div></section>
-    <section id="fridge" class="screen"><div class="page-title"><button class="back" onclick="show('home')">‹</button><h2>我的食材</h2></div><p class="drag-note">按住食材，拖到另一个区域即可整理。</p><div class="inventory-zone" data-dropzone="冷藏"><div class="section"><h3>冷藏</h3><button class="link">＋ 添加</button></div><div class="food-list"></div></div><div class="inventory-zone" data-dropzone="冷冻"><div class="section"><h3>冷冻</h3><button class="link">＋ 添加</button></div><div class="food-list"></div></div><div class="inventory-zone" data-dropzone="冰箱外"><div class="section"><h3>冰箱外</h3><button class="link">＋ 添加</button></div><div class="food-list"></div></div></section>
-    <section id="dinner" class="screen"><div class="page-title"><button class="back" onclick="show('home')">‹</button><h2>今晚吃什么</h2></div><article class="meal"><h3>用冰箱里的食材</h3><p>选择你想用掉的食材，安排一顿刚刚好的晚餐。</p><div class="choices"><span class="choice">🥬 菠菜</span><span class="choice">◻️ 豆腐</span><span class="choice">🍅 番茄</span><span class="choice">🍗 鸡胸肉</span></div></article><div><div class="section"><h3>新建晚餐</h3></div><div class="meal-form"><input id="dish-name" class="meal-input" placeholder="菜名，例如：洋葱炒鸡蛋"><input id="dish-ingredients" class="meal-input" placeholder="食材，用逗号分隔，例如：洋葱，鸡蛋"><p class="add-note">清单里没有的食材会自动加入“冷藏”，数量可随后编辑。</p><button class="save" onclick="addPlan()">加入今晚计划</button></div></div><div><div class="section"><h3>今晚的计划</h3></div><div id="plans" class="food-list"><div class="food plan"><div class="dish">🍲</div><div><h4>番茄豆腐汤</h4><p>番茄、豆腐 · 约 15 分钟</p></div></div><div class="food plan"><div class="dish">🥗</div><div><h4>香煎鸡胸肉沙拉</h4><p>鸡胸肉、菠菜 · 约 20 分钟</p></div></div></div></div></section>
-    <nav class="nav"><button class="active" data-page="home" onclick="show('home')"><b>⌂</b>首页</button><button data-page="fridge" onclick="show('fridge')"><b>▦</b>我的冰箱</button><button data-page="scan" onclick="show('scan')"><b>＋</b>入库</button><button data-page="dinner" onclick="show('dinner')"><b>♨</b>晚餐</button></nav>
+    </div>
+
+    <!-- Quick Scan Button -->
+    <button id="open-scan" class="flex items-center space-x-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-xl shadow-lg shadow-emerald-900/30 transition-all">
+      <i data-lucide="camera" class="w-4 h-4"></i>
+      <span>Scan</span>
+    </button>
+  </header>
+
+  <!-- SLIDE-OUT MENU DRAWER OVERLAY -->
+  <div id="drawer-backdrop" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"></div>
+  
+  <!-- SLIDE-OUT MENU DRAWER -->
+  <aside id="drawer" class="fixed top-0 left-0 bottom-0 z-50 w-80 bg-zinc-950 border-r border-zinc-800 p-6 flex flex-col justify-between -translate-x-full transition-transform duration-300 ease-in-out">
+    <div>
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between pb-6 mb-6 border-b border-zinc-800">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="refrigerator" class="w-5 h-5 text-emerald-400"></i>
+          <span class="font-bold text-white tracking-wide">Storage Zones</span>
+        </div>
+        <button id="close-menu" class="p-1 text-zinc-400 hover:text-white rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Category Navigation List (The 4 exact sections requested) -->
+      <nav class="space-y-2">
+        <!-- 1. All Storage -->
+        <button onclick="selectCategory('all')" class="nav-item w-full flex items-center justify-between p-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-medium transition-all group">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="layout-grid" class="w-5 h-5 text-emerald-400"></i>
+            <span>All Storage</span>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:translate-x-0.5 transition-transform"></i>
+        </button>
+
+        <!-- 2. Cold Store (with Pantry sub-category) -->
+        <div class="space-y-1">
+          <button onclick="selectCategory('chilled')" class="nav-item w-full flex items-center justify-between p-3 rounded-xl hover:bg-zinc-900 text-zinc-300 hover:text-white font-medium transition-all group">
+            <div class="flex items-center space-x-3">
+              <i data-lucide="thermometer-snowflake" class="w-5 h-5 text-sky-400"></i>
+              <span>Cold Store</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:translate-x-0.5 transition-transform"></i>
+          </button>
+          
+          <!-- Sub-category: Pantry -->
+          <button onclick="selectCategory('pantry')" class="nav-item w-full flex items-center justify-between pl-11 pr-3 py-2.5 rounded-lg text-sm hover:bg-zinc-900/60 text-zinc-400 hover:text-amber-300 font-medium transition-all group">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="corner-down-right" class="w-3.5 h-3.5 text-zinc-600"></i>
+              <span>Pantry (Door & Fresh Shelves)</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- 3. Freezer -->
+        <button onclick="selectCategory('freezer')" class="nav-item w-full flex items-center justify-between p-3 rounded-xl hover:bg-zinc-900 text-zinc-300 hover:text-white font-medium transition-all group">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="snowflake" class="w-5 h-5 text-indigo-400"></i>
+            <span>Freezer</span>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:translate-x-0.5 transition-transform"></i>
+        </button>
+
+        <!-- 4. Outside Storage -->
+        <button onclick="selectCategory('outside')" class="nav-item w-full flex items-center justify-between p-3 rounded-xl hover:bg-zinc-900 text-zinc-300 hover:text-white font-medium transition-all group">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="archive" class="w-5 h-5 text-amber-500"></i>
+            <span>Outside Storage</span>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:translate-x-0.5 transition-transform"></i>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="pt-6 border-t border-zinc-800 text-xs text-zinc-500 flex justify-between items-center">
+      <span>WhatsInTheFridge App</span>
+      <span class="text-zinc-600">v2.0 UI</span>
+    </div>
+  </aside>
+
+  <!-- MAIN HERO SECTION (Full-Screen Poster Concept) -->
+  <main class="relative w-full h-screen flex flex-col justify-center items-center text-center px-6 overflow-hidden">
+    <!-- Real-food & Modern Fridge Aesthetic Background Image -->
+    <div class="absolute inset-0 -z-10 bg-cover bg-center bg-no-repeat scale-105 transition-transform duration-1000"
+         style="background-image: url('https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=80&w=2000&auto=format&fit=crop');">
+    </div>
+    
+    <!-- Dark Vignette and Gradient Overlay for Optimal Contrast -->
+    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-zinc-950 via-black/50 to-black/60"></div>
+
+    <!-- Hero Content Box -->
+    <div class="max-w-3xl mx-auto space-y-6 pt-16">
+      <!-- Dynamic Date Badge -->
+      <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-semibold tracking-wider text-emerald-300 uppercase shadow-lg">
+        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+        <span id="current-date">Today</span>
+      </div>
+
+      <!-- Primary Brand Statement (Title) -->
+      <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-tight drop-shadow-md">
+        THIS IS YULING AND RUOBING'S FRIDGE
+      </h1>
+    </div>
   </main>
+
+  <!-- INVENTORY VIEW MODAL (Triggered when selecting items from the Drawer Menu) -->
+  <div id="inventory-modal" class="fixed inset-0 z-50 bg-zinc-950/95 backdrop-blur-xl hidden flex-col p-6 md:p-12 overflow-y-auto">
+    <div class="max-w-6xl mx-auto w-full space-y-8">
+      <!-- Header with Category Name & Close -->
+      <div class="flex items-center justify-between pb-6 border-b border-zinc-800">
+        <div>
+          <h2 id="view-title" class="text-3xl font-bold text-white">All Storage</h2>
+          <p class="text-zinc-400 text-sm mt-1">Real-food item list in Yuling and Ruobing's home.</p>
+        </div>
+        <button id="close-inventory" class="p-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+      <!-- Real-Food Items Grid (Clean photography-focused layout) -->
+      <div id="inventory-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Dynamic Items populated via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SIMULATED CAMERA SCAN MODAL -->
+  <div id="scan-modal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex-col items-center justify-center p-6">
+    <div class="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-3xl p-6 relative space-y-6">
+      <button id="close-scan" class="absolute top-4 right-4 p-2 text-zinc-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center space-y-2">
+        <h3 class="text-xl font-bold text-white">AI Real-Food Scanner</h3>
+        <p class="text-xs text-zinc-400">Capturing items for Yuling & Ruobing's fridge</p>
+      </div>
+
+      <!-- Camera Viewport Simulation -->
+      <div class="relative w-full h-64 bg-zinc-950 rounded-2xl overflow-hidden flex items-center justify-center border border-zinc-800">
+        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover opacity-80" />
+        <!-- Scanner Bounding Box -->
+        <div class="absolute inset-8 border-2 border-dashed border-emerald-400 rounded-xl flex items-center justify-center bg-emerald-500/10 animate-pulse">
+          <span class="bg-emerald-500 text-black text-xs font-bold px-3 py-1 rounded-full shadow">Detecting Groceries...</span>
+        </div>
+      </div>
+
+      <button id="finish-scan" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl transition-all">
+        Add Identified Items
+      </button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
   <script>
-    function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));window.scrollTo(0,0)}
-    function recognize(){document.getElementById('recognition').style.display='block'}
-    function saveItems(){alert('已成功将 4 样食材加入冰箱！');show('fridge')}
-    const emojiFor={"洋葱":"🧅","土豆":"🥔","鸡蛋":"🥚","番茄":"🍅","菠菜":"🥬","豆腐":"◻️","鸡胸肉":"🍗","虾仁":"🦐","牛奶":"🥛","大米":"🍚","意面":"🍝","速冻饺子":"🥟","酸奶":"🥣","黄油":"🧈"};
-    let inventory=[
-      {id:1,name:'番茄',quantity:'4 个',zone:'冷藏'},{id:2,name:'菠菜',quantity:'1 把',zone:'冷藏'},{id:3,name:'豆腐',quantity:'1 盒',zone:'冷藏'},{id:4,name:'牛奶',quantity:'1 盒',zone:'冷藏'},{id:5,name:'鸡蛋',quantity:'6 个',zone:'冷藏'},{id:6,name:'酸奶',quantity:'2 杯',zone:'冷藏'},{id:7,name:'黄油',quantity:'1 盒',zone:'冷藏'},
-      {id:8,name:'鸡胸肉',quantity:'2 份',zone:'冷冻'},{id:9,name:'虾仁',quantity:'1 袋',zone:'冷冻'},{id:10,name:'速冻饺子',quantity:'1 袋',zone:'冷冻'},
-      {id:11,name:'洋葱',quantity:'2 个',zone:'冰箱外'},{id:12,name:'土豆',quantity:'4 个',zone:'冰箱外'},{id:13,name:'大米',quantity:'1 袋',zone:'冰箱外'},{id:14,name:'意面',quantity:'1 包',zone:'冰箱外'}
+    // Initialize Vector Icons
+    lucide.createIcons();
+
+    // Set Dynamic Date (Standard English Format)
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
+
+    // Sample Real-Food Data (No Cartoons, Crisp Photos)
+    const inventoryData = [
+      { id: 1, name: 'Whole Organic Milk', zone: 'chilled', category: 'Dairy', expiry: 'Fresh till Nov 12', img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?q=80&w=400&auto=format&fit=crop' },
+      { id: 2, name: 'Fresh Avocados', zone: 'pantry', category: 'Produce', expiry: 'Eat soon (3 days)', img: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?q=80&w=400&auto=format&fit=crop' },
+      { id: 3, name: 'Grass-Fed Ribeye Steak', zone: 'freezer', category: 'Meat', expiry: 'Frozen (Dec 2026)', img: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?q=80&w=400&auto=format&fit=crop' },
+      { id: 4, name: 'Artisan Sourdough Bread', zone: 'outside', category: 'Pantry', expiry: 'Fresh till Nov 08', img: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?q=80&w=400&auto=format&fit=crop' },
+      { id: 5, name: 'Greek Yogurt (Plain)', zone: 'chilled', category: 'Dairy', expiry: 'Fresh till Nov 18', img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=400&auto=format&fit=crop' },
+      { id: 6, name: 'Organic Cherry Tomatoes', zone: 'pantry', category: 'Produce', expiry: 'Eat soon (2 days)', img: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=400&auto=format&fit=crop' }
     ];
-    function addFoodActions(card){if(card.querySelector('.food-actions'))return;const actions=document.createElement('div');actions.className='food-actions';actions.innerHTML='<button class="food-action" type="button">编辑</button><button class="food-action remove" type="button">用完</button>';actions.children[0].onclick=()=>editFood(card);actions.children[1].onclick=()=>removeFood(card);card.appendChild(actions)}
-    function createFood(item){const card=document.createElement('div');card.className='food draggable';card.dataset.id=item.id;const icon=document.createElement('div');icon.className='emoji';icon.textContent=emojiFor[item.name]||'🍽️';const text=document.createElement('div');text.innerHTML='<div class="name"></div><div class="meta"></div>';text.querySelector('.name').textContent=item.name;text.querySelector('.meta').textContent=item.quantity;card.append(icon,text);addFoodActions(card);return card}
-    function renderInventory(){document.querySelectorAll('[data-home-zone]').forEach(zone=>{const items=inventory.filter(x=>x.zone===zone.dataset.homeZone);zone.querySelector('.zone-count').textContent=`· ${items.length} 样`;zone.querySelector('.zone-items').textContent=items.length?items.map(x=>x.name).join(' · '):'暂无食材'});document.querySelectorAll('[data-dropzone]').forEach(zone=>{const list=zone.querySelector('.food-list');list.replaceChildren(...inventory.filter(x=>x.zone===zone.dataset.dropzone).map(createFood))})}
-    function editFood(card){const item=inventory.find(x=>x.id===Number(card.dataset.id));const nextName=prompt('食材名称',item.name);if(nextName===null)return;const quantity=prompt('剩余数量',item.quantity);if(quantity===null)return;if(!nextName.trim()||!quantity.trim()){if(confirm('信息为空，是否从清单移除？'))inventory=inventory.filter(x=>x.id!==item.id)}else{item.name=nextName.trim();item.quantity=quantity.trim()}renderInventory()}
-    function removeFood(card){const item=inventory.find(x=>x.id===Number(card.dataset.id));if(confirm(`“${item.name}”已经用完了吗？`)){inventory=inventory.filter(x=>x.id!==item.id);renderInventory()}}
-    function addPlan(){const name=document.getElementById('dish-name').value.trim();const raw=document.getElementById('dish-ingredients').value.trim();if(!name){alert('请先填写菜名。');return}const ingredients=raw.split(/[，,、]/).map(x=>x.trim()).filter(Boolean);const known=new Set(inventory.map(x=>x.name));ingredients.forEach(item=>{if(!known.has(item)){inventory.push({id:Date.now()+inventory.length,name:item,quantity:'菜单新增 · 待确认数量',zone:'冷藏'});known.add(item)}});renderInventory();const plan=document.createElement('div');plan.className='food plan';plan.innerHTML='<div class="dish">🍽️</div><div><h4></h4><p></p></div>';plan.querySelector('h4').textContent=name;plan.querySelector('p').textContent=ingredients.length?ingredients.join('、'):'自定义晚餐计划';document.getElementById('plans').prepend(plan);document.getElementById('dish-name').value='';document.getElementById('dish-ingredients').value=''}
-    renderInventory();
-    let movingCard, ghost, dragging=false, pointerStart;
-    document.addEventListener('pointerdown', e => { const card=e.target.closest('.draggable'); if(!card)return; movingCard=card; pointerStart={x:e.clientX,y:e.clientY}; }, {passive:true});
-    document.addEventListener('pointermove', e => { if(!movingCard)return; if(!dragging && Math.hypot(e.clientX-pointerStart.x,e.clientY-pointerStart.y)>7){ dragging=true; ghost=movingCard.cloneNode(true); ghost.className='food drag-ghost'; document.body.appendChild(ghost); movingCard.classList.add('dragging'); } if(dragging){ e.preventDefault(); ghost.style.left=(e.clientX-30)+'px'; ghost.style.top=(e.clientY-28)+'px'; document.querySelectorAll('.inventory-zone').forEach(z=>z.classList.remove('drop-target')); const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-dropzone]'); if(target)target.classList.add('drop-target'); } }, {passive:false});
-    document.addEventListener('pointerup', e => { if(dragging){ const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-dropzone]'); if(target){const item=inventory.find(x=>x.id===Number(movingCard.dataset.id));if(item){item.zone=target.dataset.dropzone;renderInventory()}} ghost.remove(); document.querySelectorAll('.inventory-zone').forEach(z=>z.classList.remove('drop-target')); } movingCard=null; ghost=null; dragging=false; });
+
+    // UI Drawer Elements
+    const drawer = document.getElementById('drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const openMenuBtn = document.getElementById('open-menu');
+    const closeMenuBtn = document.getElementById('close-menu');
+
+    // Drawer Toggle Logic
+    function openDrawer() {
+      drawer.classList.remove('-translate-x-full');
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeDrawer() {
+      drawer.classList.add('-translate-x-full');
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    openMenuBtn.addEventListener('click', openDrawer);
+    closeMenuBtn.addEventListener('click', closeDrawer);
+    backdrop.addEventListener('click', closeDrawer);
+
+    // Inventory Modal Logic
+    const inventoryModal = document.getElementById('inventory-modal');
+    const closeInventoryBtn = document.getElementById('close-inventory');
+    const viewTitle = document.getElementById('view-title');
+    const inventoryGrid = document.getElementById('inventory-grid');
+
+    function selectCategory(zone) {
+      closeDrawer();
+      inventoryModal.classList.remove('hidden');
+      inventoryModal.classList.add('flex');
+
+      let filteredItems = inventoryData;
+      let titleText = 'All Storage';
+
+      if (zone === 'chilled') {
+        filteredItems = inventoryData.filter(i => i.zone === 'chilled' || i.zone === 'pantry');
+        titleText = 'Cold Store';
+      } else if (zone === 'pantry') {
+        filteredItems = inventoryData.filter(i => i.zone === 'pantry');
+        titleText = 'Pantry (Cold Shelf & Door)';
+      } else if (zone === 'freezer') {
+        filteredItems = inventoryData.filter(i => i.zone === 'freezer');
+        titleText = 'Freezer Zone';
+      } else if (zone === 'outside') {
+        filteredItems = inventoryData.filter(i => i.zone === 'outside');
+        titleText = 'Outside Storage';
+      }
+
+      viewTitle.textContent = titleText;
+      renderGrid(filteredItems);
+    }
+
+    function renderGrid(items) {
+      inventoryGrid.innerHTML = items.map(item => `
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-700 transition-all">
+          <div class="h-44 w-full bg-zinc-950 relative overflow-hidden">
+            <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">
+            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/10">
+              ${item.zone}
+            </span>
+          </div>
+          <div class="p-4 space-y-2">
+            <h4 class="font-semibold text-white">${item.name}</h4>
+            <p class="text-xs text-emerald-400 font-medium">${item.expiry}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    closeInventoryBtn.addEventListener('click', () => {
+      inventoryModal.classList.add('hidden');
+      inventoryModal.classList.remove('flex');
+    });
+
+    // Scan Modal Toggle
+    const scanModal = document.getElementById('scan-modal');
+    document.getElementById('open-scan').addEventListener('click', () => {
+      scanModal.classList.remove('hidden');
+      scanModal.classList.add('flex');
+    });
+    document.getElementById('close-scan').addEventListener('click', () => {
+      scanModal.classList.add('hidden');
+      scanModal.classList.remove('flex');
+    });
+    document.getElementById('finish-scan').addEventListener('click', () => {
+      scanModal.classList.add('hidden');
+      scanModal.classList.remove('flex');
+      selectCategory('all');
+    });
   </script>
 </body>
 </html>
