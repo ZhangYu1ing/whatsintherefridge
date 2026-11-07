@@ -24,10 +24,30 @@
       <button id="open-menu" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-all text-white flex items-center justify-center">
         <i data-lucide="menu" class="w-6 h-6"></i>
       </button>
+      <div class="flex items-center space-x-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 48 48"
+          width="36"
+          height="36"
+          fill="none"
+          stroke="#059669"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="shrink-0"
+        >
+          <rect x="9" y="3" width="30" height="42" rx="4"/>
+          <path d="M9 19 H39"/>
+          <path d="M14 8 V15"/>
+          <path d="M14 24 V33"/>
+        </svg>
+      </div>
       <!-- Logo / Brand Title -->
       <div class="flex items-center space-x-2">
-        <i data-lucide="refrigerator" class="w-6 h-6 text-emerald-400"></i>
-        <span class="text-lg font-bold tracking-tight text-white">WhatsInTheFridge</span>
+          <span class="text-lg font-bold tracking-tight text-white">
+            WhatsInTheFridge
+          </span>
       </div>
     </div>
 
@@ -94,11 +114,11 @@
           <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:translate-x-0.5 transition-transform"></i>
         </button>
 
-        <!-- 4. Outside Storage -->
+        <!-- 4. Outside Fridge -->
         <button onclick="selectCategory('outside')" class="nav-item w-full flex items-center justify-between p-3 rounded-xl hover:bg-zinc-900 text-zinc-300 hover:text-white font-medium transition-all group">
           <div class="flex items-center space-x-3">
             <i data-lucide="archive" class="w-5 h-5 text-amber-500"></i>
-            <span>Outside Storage</span>
+            <span>Outside Fridge</span>
           </div>
           <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500 group-hover:translate-x-0.5 transition-transform"></i>
         </button>
@@ -135,7 +155,33 @@
         THIS IS YULING AND RUOBING'S FRIDGE
       </h1>
     </div>
+
+    <!-- Scroll Down Hint -> Contact Us -->
+    <button onclick="document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })"
+      class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-1 text-zinc-300 hover:text-emerald-400 transition-colors animate-bounce">
+      <span class="text-xs font-semibold uppercase tracking-widest">Contact Us</span>
+      <i data-lucide="chevron-down" class="w-6 h-6"></i>
+    </button>
   </main>
+
+  <!-- CONTACT US SECTION (Scroll down to reveal) -->
+  <section id="contact" class="relative w-full bg-white px-6 py-20">
+    <div class="max-w-4xl mx-auto space-y-8 text-center">
+      <h2 class="text-3xl md:text-4xl font-extrabold text-gray-500">Contact Us</h2>
+
+      <!-- Contact Details (plain text list) -->
+      <ul class="flex flex-wrap justify-center gap-x-10 gap-y-3 text-gray-500">
+        <!-- TODO: 替换为真实联系方式 -->
+        <li>Email: hello@whatsinthefridge.app</li>
+        <li>Location: Yuling &amp; Ruobing's Kitchen</li>
+      </ul>
+
+      <!-- Footer Note -->
+      <div class="text-xs text-gray-400 pt-6 border-t border-gray-200">
+        &copy; 2026 WhatsInTheFridge. Made with care by Yuling &amp; Ruobing.
+      </div>
+    </div>
+  </section>
 
   <!-- INVENTORY VIEW MODAL (Triggered when selecting items from the Drawer Menu) -->
   <div id="inventory-modal" class="fixed inset-0 z-50 bg-zinc-950/95 backdrop-blur-xl hidden flex-col p-6 md:p-12 overflow-y-auto">
@@ -250,7 +296,7 @@
         titleText = 'Freezer Zone';
       } else if (zone === 'outside') {
         filteredItems = inventoryData.filter(i => i.zone === 'outside');
-        titleText = 'Outside Storage';
+        titleText = 'Outside Fridge';
       }
 
       viewTitle.textContent = titleText;
